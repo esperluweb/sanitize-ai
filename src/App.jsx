@@ -178,6 +178,13 @@ function App() {
           </div>
         </div>
       </div>
+      <footer style={{
+        marginTop: '2rem',
+        textAlign: 'center',
+        color: '#6b7280'
+      }}>
+        &copy; {new Date().getFullYear() === 2025 ? '2025' : `2025-${new Date().getFullYear()}` } - Développé par <a href="https://esperluweb.com" style={{ color: '#3b82f6' }} target="_blank" rel="noopener noreferrer">EsperluWeb</a> / <a href="https://gregoireboisseau.fr" style={{ color: '#3b82f6' }} target="_blank" rel="noopener noreferrer">Grégoire Boisseau</a>
+      </footer>
     </div>
   )
 }
