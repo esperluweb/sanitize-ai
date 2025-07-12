@@ -1,16 +1,10 @@
 import { useState } from 'react';
 import './index.css';
-
-function nettoyerTexte(texte) {
-  if (!texte) return '';
-  
-  return texte
-    .replace(/[’‘]/g, "'")
-    .replace(/[“”«»]/g, '"')
-    .replace(/[–—]/g, '-')
-    .replace(/…/g, '...')
-    .replace(/\u00A0/g, ' ');
-}
+import Header from './components/Header';
+import Footer from './components/Footer';
+import TextAreaInput from './components/TextAreaInput';
+import TextDisplay from './components/TextDisplay';
+import { nettoyerTexte } from './utils/textUtils';
 
 function App() {
   const [inputText, setInputText] = useState('');
@@ -38,16 +32,7 @@ function App() {
         maxWidth: '72rem',
         margin: '0 auto'
       }}>
-        <h1 style={{
-          fontSize: '1.5rem',
-          lineHeight: '2rem',
-          fontWeight: 'bold',
-          textAlign: 'center',
-          marginBottom: '2rem',
-          color: '#1f2937'
-        }}>
-          Nettoyeur de texte
-        </h1>
+        <Header />
         
         <div style={{
           display: 'flex',
@@ -57,134 +42,18 @@ function App() {
             flexDirection: 'row'
           }
         }}>
-          {/* Zone de texte d'entrée */}
-          <div style={{ flex: 1 }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '0.5rem'
-            }}>
-              <label htmlFor="input-text" style={{
-                fontWeight: 500,
-                color: '#374151'
-              }}>
-                Texte original
-              </label>
-              <span style={{
-                fontSize: '0.875rem',
-                color: '#6b7280'
-              }}>
-                {inputText.length} caractères
-              </span>
-            </div>
-            <textarea
-              id="input-text"
-              style={{
-                width: '100%',
-                height: '16rem',
-                padding: '1rem',
-                border: '1px solid #d1d5db',
-                borderRadius: '0.5rem',
-                resize: 'none',
-                outline: 'none',
-                transition: 'all 0.2s',
-                fontFamily: 'inherit',
-                fontSize: '1rem',
-                lineHeight: '1.5'
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = '#3b82f6';
-                e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.2)';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = '#d1d5db';
-                e.target.style.boxShadow = 'none';
-              }}
-              placeholder="Collez votre texte ici..."
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-            />
-          </div>
-          
-          {/* Zone de texte de sortie */}
-          <div style={{ flex: 1 }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '0.5rem'
-            }}>
-              <label style={{
-                fontWeight: 500,
-                color: '#374151'
-              }}>
-                Texte nettoyé
-              </label>
-              <span style={{
-                fontSize: '0.875rem',
-                color: '#6b7280'
-              }}>
-                {cleanedText.length} caractères
-              </span>
-            </div>
-            <div style={{ position: 'relative' }}>
-              <textarea
-                readOnly
-                style={{
-                  width: '100%',
-                  height: '16rem',
-                  padding: '1rem',
-                  backgroundColor: '#f9fafb',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '0.5rem',
-                  resize: 'none',
-                  fontFamily: 'inherit',
-                  fontSize: '1rem',
-                  lineHeight: '1.5'
-                }}
-                value={cleanedText}
-              />
-              <button
-                onClick={handleCopy}
-                style={{
-                  position: 'absolute',
-                  bottom: '1rem',
-                  right: '1rem',
-                  color: 'white',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '0.5rem',
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.2s',
-                  backgroundColor: isCopied ? '#10b981' : '#3b82f6',
-                  opacity: !cleanedText ? 0.6 : 1,
-                  pointerEvents: !cleanedText ? 'none' : 'auto'
-                }}
-                onMouseOver={(e) => {
-                  if (!isCopied && cleanedText) {
-                    e.target.style.backgroundColor = '#2563eb';
-                  }
-                }}
-                onMouseOut={(e) => {
-                  if (!isCopied && cleanedText) {
-                    e.target.style.backgroundColor = '#3b82f6';
-                  }
-                }}
-              >
-                {isCopied ? 'Copié !' : 'Copier'}
-              </button>
-            </div>
-          </div>
+          <TextAreaInput 
+            value={inputText} 
+            onChange={(e) => setInputText(e.target.value)} 
+          />
+          <TextDisplay 
+            cleanedText={cleanedText} 
+            onCopy={handleCopy} 
+            isCopied={isCopied} 
+          />
         </div>
       </div>
-      <footer style={{
-        marginTop: '2rem',
-        textAlign: 'center',
-        color: '#6b7280'
-      }}>
-        &copy; {new Date().getFullYear() === 2025 ? '2025' : `2025-${new Date().getFullYear()}` } - Développé par <a href="https://esperluweb.com" style={{ color: '#3b82f6' }} target="_blank" rel="noopener noreferrer">EsperluWeb</a> / <a href="https://gregoireboisseau.fr" style={{ color: '#3b82f6' }} target="_blank" rel="noopener noreferrer">Grégoire Boisseau</a>
-      </footer>
+      <Footer />
     </div>
   )
 }
